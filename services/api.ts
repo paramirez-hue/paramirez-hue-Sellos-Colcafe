@@ -97,8 +97,13 @@ export const ApiService = {
       const { error } = await supabase
         .from(TABLES.USERS)
         .upsert(users, { onConflict: 'id' });
-      return !error;
-    } catch {
+      if (error) {
+        console.error("Error Supabase (Users):", error.message);
+        throw error;
+      }
+      return true;
+    } catch (err) {
+      console.error("Excepción al guardar usuarios:", err);
       localStorage.setItem('selloUsers', JSON.stringify(users));
       return false;
     }
@@ -136,8 +141,13 @@ export const ApiService = {
       const { error } = await supabase
         .from(TABLES.CITIES)
         .upsert(cityObjects, { onConflict: 'name' });
-      return !error;
-    } catch {
+      if (error) {
+        console.error("Error Supabase (Cities):", error.message);
+        throw error;
+      }
+      return true;
+    } catch (err) {
+      console.error("Excepción al guardar ciudades:", err);
       localStorage.setItem('selloCities', JSON.stringify(cities));
       return false;
     }
