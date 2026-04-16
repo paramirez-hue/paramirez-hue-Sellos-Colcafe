@@ -180,9 +180,10 @@ export const ApiService = {
       // Guardamos en LocalStorage siempre como respaldo inmediato
       localStorage.setItem('selloSettings', JSON.stringify(settings));
 
-      // Verificamos si hay conexión antes de intentar
-      if (supabase.auth.getSession === undefined) {
-         console.warn("Supabase no está configurado correctamente.");
+      // Verificamos si las credenciales están presentes
+      const { isSupabaseConfigured } = await import('./supabase');
+      if (!isSupabaseConfigured) {
+         console.warn("Supabase no está configurado. Verifique las variables de entorno VITE_SUPABASE_URL y VITE_SUPABASE_ANON_KEY en Vercel.");
          return false;
       }
 
@@ -199,7 +200,7 @@ export const ApiService = {
         }, { onConflict: 'id' });
       
       if (error) {
-        console.error("Error detallado de Supabase al guardar settings:", error);
+        console.error("Error de Supabase (UPSERT):", error.message, error.details, error.hint);
         return false;
       }
       return true;
