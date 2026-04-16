@@ -175,7 +175,7 @@ export const ApiService = {
     }
   },
 
-  async saveSettings(settings: AppSettings): Promise<boolean> {
+  async saveSettings(settings: AppSettings): Promise<{success: boolean, error?: string}> {
     try {
       // Guardamos en LocalStorage siempre como respaldo inmediato
       localStorage.setItem('selloSettings', JSON.stringify(settings));
@@ -183,8 +183,7 @@ export const ApiService = {
       // Verificamos si las credenciales están presentes
       const { isSupabaseConfigured } = await import('./supabase');
       if (!isSupabaseConfigured) {
-         console.warn("Supabase no está configurado. Verifique las variables de entorno VITE_SUPABASE_URL y VITE_SUPABASE_ANON_KEY en Vercel.");
-         return false;
+         return { success: false, error: "Credenciales de Supabase no configuradas." };
       }
 
       console.log("Intentando guardar configuración en Supabase...", { title: settings.title, logoSize: settings.logo?.length });
@@ -200,13 +199,13 @@ export const ApiService = {
         }, { onConflict: 'id' });
       
       if (error) {
-        console.error("Error de Supabase (UPSERT):", error.message, error.details, error.hint);
-        return false;
+        console.error("Error de Supabase (UPSERT):", error);
+        return { success: false, error: error.message };
       }
-      return true;
-    } catch (err) {
+      return { success: true };
+    } catch (err: any) {
       console.error("Excepción al guardar configuración:", err);
-      return false;
+      return { success: false, error: err.message || "Error desconocido" };
     }
   }
 };

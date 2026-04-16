@@ -837,11 +837,11 @@ export default function App() {
   const handleLogout = () => { setCurrentUser(null); localStorage.removeItem('selloUser'); setActiveTab('dashboard'); setIsSearchPerformed(false); setIsDeleteModeActive(false); };
   const handleUpdateSettings = async (s: AppSettings) => { 
     setAppSettings(s); 
-    const success = await ApiService.saveSettings(s); 
-    if (success) {
-      setToast({message: "CONFIGURACIÓN ACTUALIZADA", type: 'success'});
+    const result = await ApiService.saveSettings(s); 
+    if (result.success) {
+      setToast({message: "CONFIGURACIÓN ACTUALIZADA EN NUBE", type: 'success'});
     } else {
-      setToast({message: "ERROR AL GUARDAR EN NUBE (Guardado local)", type: 'error'});
+      setToast({message: `ERROR NUBE: ${result.error || 'Guardado localmente'}`, type: 'error'});
     }
   };
   const handleAddUser = (u: User) => setUsers([...users, u]);
