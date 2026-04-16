@@ -262,12 +262,12 @@ const SettingsView: React.FC<{
   const [logoPreview, setLogoPreview] = useState<string | null>(settings.logo);
   const [newType, setNewType] = useState('');
   const [sealTypes, setSealTypes] = useState<string[]>(settings?.sealTypes || []);
-  const [themeColor, setThemeColor] = useState(settings?.themeColor || '#003594');
+  const [themeColor, setThemeColor] = useState(settings?.themeColor || '#C21B1B');
   const fileInputRef = useRef<HTMLInputElement>(null);
   const dbFileRef = useRef<HTMLInputElement>(null);
 
   const presetColors = [
-    { name: 'Azul Original', hex: '#003594' },
+    { name: 'Rojo Colcafé', hex: '#C21B1B' },
     { name: 'Rojo Corporativo', hex: '#c21b1b' },
     { name: 'Verde Logística', hex: '#0c8444' },
     { name: 'Negro Premium', hex: '#111827' },
@@ -737,13 +737,13 @@ export default function App() {
   const [toast, setToast] = useState<{message: string, type: 'success' | 'error'} | null>(null);
   const [isDeleteModeActive, setIsDeleteModeActive] = useState(false);
   
-  const [appSettings, setAppSettings] = useState<AppSettings>({ title: 'SelloMaster Pro', logo: null, sealTypes: ['Botella', 'Cable', 'Plástico', 'Metálico'], themeColor: '#003594' });
+  const [appSettings, setAppSettings] = useState<AppSettings>({ title: 'SelloMaster Pro', logo: null, sealTypes: ['Botella', 'Cable', 'Plástico', 'Metálico'], themeColor: '#C21B1B' });
   const [isInitialLoadDone, setIsInitialLoadDone] = useState(false);
   const fileExcelRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const root = document.documentElement;
-    const color = appSettings.themeColor || '#003594';
+    const color = appSettings.themeColor || '#C21B1B';
     root.style.setProperty('--color-primary', color);
     root.style.setProperty('--color-primary-dark', darkenColor(color, 40));
     root.style.setProperty('--color-primary-light', lightenColor(color, 40));
