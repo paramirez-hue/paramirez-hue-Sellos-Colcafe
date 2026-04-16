@@ -180,12 +180,26 @@ export const ApiService = {
       // Guardamos en LocalStorage siempre como respaldo inmediato
       localStorage.setItem('selloSettings', JSON.stringify(settings));
 
+      // Verificamos si hay conexión antes de intentar
+      if (supabase.auth.getSession === undefined) {
+         console.warn("Supabase no está configurado correctamente.");
+         return false;
+      }
+
+      console.log("Intentando guardar configuración en Supabase...", { title: settings.title, logoSize: settings.logo?.length });
+
       const { error } = await supabase
         .from(TABLES.SETTINGS)
-        .upsert({ id: 1, ...settings }, { onConflict: 'id' });
+        .upsert({ 
+          id: 1, 
+          title: settings.title, 
+          logo: settings.logo, 
+          sealTypes: settings.sealTypes, 
+          themeColor: settings.themeColor 
+        }, { onConflict: 'id' });
       
       if (error) {
-        console.error("Error guardando en Supabase:", error.message);
+        console.error("Error detallado de Supabase al guardar settings:", error);
         return false;
       }
       return true;
