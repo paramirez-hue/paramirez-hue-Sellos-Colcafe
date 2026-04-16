@@ -5,6 +5,7 @@ import { Seal, SealStatus, FilterOptions, MovementHistory, User, UserRole, AppSe
 import * as XLSX from 'xlsx';
 import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, Legend } from 'recharts';
 import { ApiService } from './services/api';
+import { supabase, isSupabaseConfigured } from './services/supabase';
 
 // --- HELPERS ---
 
@@ -472,13 +473,13 @@ const SettingsView: React.FC<{
           <label className="text-[10px] font-black text-custom-blue uppercase tracking-widest block mb-4">Estado de Conexión (Supabase)</label>
           <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200 flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <div className={`w-3 h-3 rounded-full ${(!supabase.storage.from('test') ? 'bg-red-500' : 'bg-emerald-500 animate-pulse')}`}></div>
+              <div className={`w-3 h-3 rounded-full ${(isSupabaseConfigured ? 'bg-emerald-500 animate-pulse' : 'bg-red-500')}`}></div>
               <div>
                 <p className="text-[10px] font-black text-custom-blue uppercase tracking-widest">
-                  {supabase.storage.from('test') ? 'Sistema Cloud Activado' : 'Modo Operativo Local'}
+                  {isSupabaseConfigured ? 'Sistema Cloud Activado' : 'Modo Operativo Local'}
                 </p>
                 <p className="text-[9px] text-slate-500 font-bold uppercase tracking-tighter">
-                  Verifique la consola (F12) para diagnósticos de sincronización
+                  {isSupabaseConfigured ? 'Credenciales detectadas correctamente' : 'Faltan credenciales (VITE_SUPABASE_URL)'}
                 </p>
               </div>
             </div>
