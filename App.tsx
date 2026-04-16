@@ -291,7 +291,6 @@ const SettingsView: React.FC<{
 
   const handleSave = () => { 
     onUpdate({ title, logo: logoPreview, sealTypes, themeColor }); 
-    alert('Configuración guardada satisfactoriamente.'); 
   };
 
   const handleExportDB = () => {
@@ -796,7 +795,15 @@ export default function App() {
 
   const handleLogin = (u: User) => { setCurrentUser(u); localStorage.setItem('selloUser', JSON.stringify(u)); setIsSearchPerformed(false); setFilteredSeals([]); };
   const handleLogout = () => { setCurrentUser(null); localStorage.removeItem('selloUser'); setActiveTab('dashboard'); setIsSearchPerformed(false); setIsDeleteModeActive(false); };
-  const handleUpdateSettings = async (s: AppSettings) => { setAppSettings(s); await ApiService.saveSettings(s); };
+  const handleUpdateSettings = async (s: AppSettings) => { 
+    setAppSettings(s); 
+    const success = await ApiService.saveSettings(s); 
+    if (success) {
+      setToast({message: "CONFIGURACIÓN ACTUALIZADA", type: 'success'});
+    } else {
+      setToast({message: "ERROR AL GUARDAR EN NUBE (Guardado local)", type: 'error'});
+    }
+  };
   const handleAddUser = (u: User) => setUsers([...users, u]);
   const handleUpdateUser = (updatedUser: User) => { setUsers(users.map(u => u.id === updatedUser.id ? updatedUser : u)); if (currentUser?.id === updatedUser.id) { setCurrentUser(updatedUser); localStorage.setItem('selloUser', JSON.stringify(updatedUser)); } };
   const handleDeleteUser = async (id: string) => {

@@ -161,23 +161,36 @@ export const ApiService = {
       const { data, error } = await supabase
         .from(TABLES.SETTINGS)
         .select('*')
+        .eq('id', 1)
         .single();
 
-      if (error) throw error;
+      if (error) {
+        console.warn("No se pudo cargar config de Supabase, usando LocalStorage:", error.message);
+        throw error;
+      }
       return data as AppSettings;
     } catch {
-      return JSON.parse(localStorage.getItem('selloSettings') || '{"title": "GESTIÓN DE SELLOS COLCAFÉ", "logo": null, "sealTypes": ["Botella", "Cable", "Plástico"], "themeColor": "#C21B1B"}');
+      const fallback = '{"title": "GESTIÓN DE SELLOS COLCAFÉ", "logo": null, "sealTypes": ["Botella", "Cable", "Plástico", "Metálico"], "themeColor": "#C21B1B"}';
+      return JSON.parse(localStorage.getItem('selloSettings') || fallback);
     }
   },
 
   async saveSettings(settings: AppSettings): Promise<boolean> {
     try {
+      // Guardamos en LocalStorage siempre como respaldo inmediato
+      localStorage.setItem('selloSettings', JSON.stringify(settings));
+
       const { error } = await supabase
         .from(TABLES.SETTINGS)
         .upsert({ id: 1, ...settings }, { onConflict: 'id' });
-      return !error;
-    } catch {
-      localStorage.setItem('selloSettings', JSON.stringify(settings));
+      
+      if (error) {
+        console.error("Error guardando en Supabase:", error.message);
+        return false;
+      }
+      return true;
+    } catch (err) {
+      console.error("Excepción al guardar configuración:", err);
       return false;
     }
   }
