@@ -9,6 +9,6 @@ if (!supabaseUrl || !supabaseAnonKey) {
 }
 
 export const supabase = createClient(
-  supabaseUrl || 'https://placeholder-url.supabase.co', 
-  supabaseAnonKey || 'placeholder-key'
+  supabaseUrl || 'https://MISSING-CREDENTIALS.supabase.co', 
+  supabaseAnonKey || 'missing-key'
 );
