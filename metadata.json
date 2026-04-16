@@ -1,5 +1,5 @@
 {
-  "name": "App sellos Colcafé",
+  "name": "GESTIÓN DE SELLOS COLCAFÉ",
   "description": "Sistema avanzado para el manejo y control de inventario de precintos de seguridad (sellos)",
   "requestFramePermissions": [
     "camera"

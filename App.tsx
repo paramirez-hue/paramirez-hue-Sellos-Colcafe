@@ -141,7 +141,7 @@ const DashboardView: React.FC<{ seals: Seal[]; user: User; cities: string[] }> =
     <div className="space-y-10 animate-in fade-in duration-700">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
-          <h3 className="text-3xl font-black text-custom-blue uppercase tracking-tighter italic">Dashboard de Operaciones</h3>
+          <h3 className="text-3xl font-black text-custom-blue uppercase tracking-tighter italic">GESTIÓN DE SELLOS COLCAFÉ</h3>
           <p className="text-xs text-slate-500 font-bold uppercase tracking-widest mt-1">Estadísticas en Tiempo Real - Sede: <span className="text-custom-blue">{user.city}</span></p>
         </div>
         <div className="bg-white px-6 py-3 rounded-2xl shadow-sm border border-slate-200 flex items-center gap-4">
@@ -306,7 +306,7 @@ const SettingsView: React.FC<{
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = `SelloMaster_Backup_${new Date().toLocaleDateString()}.json`;
+    link.download = `SelloColcafe_Backup_${new Date().toLocaleDateString()}.json`;
     link.click();
     URL.revokeObjectURL(url);
   };
@@ -550,7 +550,7 @@ const UserManagement: React.FC<{
     if (!formData.username || !formData.password) return alert('Usuario y contraseña obligatorios');
     if (editingUser) onUpdateUser({ ...editingUser, ...formData });
     else {
-      const u: User = { ...formData, id: Math.random().toString(36).substr(2, 9), organization: 'SelloMaster Group' };
+      const u: User = { ...formData, id: Math.random().toString(36).substr(2, 9), organization: 'Colcafé' };
       onAddUser(u);
     }
     setIsModalOpen(false); setEditingUser(null);
@@ -737,7 +737,7 @@ export default function App() {
   const [toast, setToast] = useState<{message: string, type: 'success' | 'error'} | null>(null);
   const [isDeleteModeActive, setIsDeleteModeActive] = useState(false);
   
-  const [appSettings, setAppSettings] = useState<AppSettings>({ title: 'SelloMaster Pro', logo: null, sealTypes: ['Botella', 'Cable', 'Plástico', 'Metálico'], themeColor: '#C21B1B' });
+  const [appSettings, setAppSettings] = useState<AppSettings>({ title: 'GESTIÓN DE SELLOS COLCAFÉ', logo: null, sealTypes: ['Botella', 'Cable', 'Plástico', 'Metálico'], themeColor: '#C21B1B' });
   const [isInitialLoadDone, setIsInitialLoadDone] = useState(false);
   const fileExcelRef = useRef<HTMLInputElement>(null);
 
@@ -852,7 +852,7 @@ export default function App() {
     const exportData = (isSearchPerformed ? filteredSeals : seals)
       .filter(s => s.city?.toUpperCase() === currentUser?.city.toUpperCase())
       .map(s => ({ ID: s.id, Estado: s.status, Tipo: s.type, "Fecha Alta": s.creationDate, "Último Movimiento": s.lastMovement, Operador: s.entryUser })); 
-    exportToExcel(exportData, `Inventario_SelloMaster_${currentUser?.city}`); 
+    exportToExcel(exportData, `Inventario_SellosColcafe_${currentUser?.city}`); 
   };
 
   const handleExcelImport = (e: React.ChangeEvent<HTMLInputElement>) => { 

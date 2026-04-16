@@ -166,7 +166,7 @@ export const ApiService = {
       if (error) throw error;
       return data as AppSettings;
     } catch {
-      return JSON.parse(localStorage.getItem('selloSettings') || '{"title": "SelloMaster Pro", "logo": null, "sealTypes": ["Botella", "Cable", "Plástico"], "themeColor": "#C21B1B"}');
+      return JSON.parse(localStorage.getItem('selloSettings') || '{"title": "GESTIÓN DE SELLOS COLCAFÉ", "logo": null, "sealTypes": ["Botella", "Cable", "Plástico"], "themeColor": "#C21B1B"}');
     }
   },
 
